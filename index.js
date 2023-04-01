@@ -7,10 +7,17 @@ const categoriesController = require("./categories/CategoriesController")
 const articlessController = require("./articles/ArticlesController")
 const Article = require("./articles/Article")
 const Category = require("./categories/Category")
+const UserController = require("./users/UserController");
+const User = require("./users/User");
 
 app.set('view engine','ejs');
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+
+app.use("/",UserController);
+app.use("/", categoriesController);
+app.use("/", articlessController);
+
 
 //para trabalhar com arquivos staticos
 
@@ -26,14 +33,13 @@ connection
     console.log(error);
 })
 
-app.use("/", categoriesController);
-app.use("/", articlessController);
 
 app.get("/",(req, res) =>{
     Article.findAll({
         order:[
             ['id','DESC']
-        ]
+        ],
+        limit: 4
 
     }).then(articles =>{
 
